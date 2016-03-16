@@ -1,0 +1,26 @@
+{
+  "name": "MARK",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "/repo/MARK/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dualshock-controller": "^0.6.9",
+    "johnny-five": "^0.9.25",
+    "lodash": "^4.6.1",
+    "mosca": "^1.1.2",
+    "mqtt": "^1.7.2",
+    "mqtt-discover": "^0.1.1",
+    "mqttr": "^1.1.4",
+    "pm2": "^1.0.2"
+  }
+}
