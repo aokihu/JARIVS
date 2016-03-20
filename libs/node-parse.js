@@ -5,7 +5,7 @@ const mqttr = require('mqttr')
 const EventEmitter = require("events").EventEmitter
 const dgram = require('dgram')
 const os = require('os')
-const Config = require('../configure.js')
+const Config = require('../configure.json')
 
 class NodeMeta extends EventEmitter {
 
@@ -84,7 +84,7 @@ class NodeMeta extends EventEmitter {
         _.isNull(d) ? this.send(t) : this.send(t, d)
       }
 
-    }, rate <= 1000 ? Math.ceil(1000 / rate) : 1000)
+    }, Math.ceil(1000/this.meta.heartRate))
 
   }
 

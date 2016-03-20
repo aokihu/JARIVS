@@ -3,7 +3,8 @@
  * 核心程序
  */
 
-const Config = require('./configure.js')
+const _ = require('lodash')
+const Config = require('./configure.json')
 const mosca = require('mosca')
 const pm2 = require('pm2')
 const dgram = require('dgram')
@@ -27,6 +28,8 @@ MoscaServer.on('ready', () => {
 MoscaServer.on('clientConnected', (client) => {
   console.log('Node Connect:', client.id)
 })
+
+
 
 //
 // Discover 发现服务
@@ -60,16 +63,26 @@ DiscoverServer.on('listening', function(){
 	console.log("Discover Server listening...");
 	console.log("Server Infomation:",
 		"\n\tPort:"+DiscoverServer.address().port);
+
+  // 每隔5s发送一次消息包
+  var retMsg = new Buffer('world');
+  setInterval(() => {
+		DiscoverServer.send(retMsg,0,retMsg.length, Config.discover.pong, Config.discover.group, () => {
+      console.log('sent mqtt server address')
+    });
+  }, 5000)
 });
 
-DiscoverServer.on('message', function(msg, client){
-
-	var strMsg = msg.toString();
-	console.log("Client Info:", client);
-
-	if(strMsg === 'hello')
-	{
-		var retMsg = new Buffer('world');
-		DiscoverServer.send(retMsg,0,retMsg.length, Config.discover.pong, Config.discover.group);
-	}
-});
+// DiscoverServer.on('message', function(msg, client){
+//
+// 	var strMsg = msg.toString();
+// 	console.log("Client Info:", client);
+//
+// 	if(strMsg === 'hello')
+// 	{
+// 		var retMsg = new Buffer('world');
+// 		DiscoverServer.send(retMsg,0,retMsg.length, Config.discover.pong, Config.discover.group, () => {
+//       console.log('sent')
+//     });
+// 	}
+// });
