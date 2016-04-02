@@ -3,19 +3,33 @@ import paho.mqtt.client as mqtt
 import json
 import socket
 import struct
+import os
 
 CONFIG_FILE = ''
 
 class Node:
 
-    def __init__(self, meta=None):
+    def __init__(self, meta=None, onConnect=None):
+        self.__onConnect = onConnect
         self.__meta = meta
         self.__config = self.__loadConfigure()
         self.__findMQTTServer()
         pass
 
+    def pub(self, topic, payload):
+        pass
+
+    def send(self, msg, payload):
+        pass
+
+    def usualPub(self, topic, payload):
+        pass
+
+    def usualSend(self, msg, payload):
+        pass
+
     def __loadConfigure(self):
-        _inputStream = open('../configure.json','r')
+        _inputStream = open(os.getcwd()+'/../../configure.json','r')
         _json = _inputStream.read()
         _inputStream.close()
 
@@ -23,18 +37,19 @@ class Node:
 
     def __handler_on_connect(self, client, userdata, flags, rc):
         print("Connected with result code "+str(rc))
-        client.subscribe("timer/now")
+        if self.__onConnect and hasattr(self.__onConnect,'__call__'):
+            self.__onConnect()
 
     def __handler_on_message(self, client, userdata, msg):
         print('userdata', userdata)
         print('msg', msg.topic,msg.payload)
 
     def __connectMQTT(self, address):
-        self.mqttClient = mqtt.Client()
-        self.mqttClient.on_connect = self.__handler_on_connect
-        self.mqttClient.on_message = self.__handler_on_message
-        self.mqttClient.connect(address[0], self.__config[u'mosca'][u'port'])
-        self.mqttClient.loop_forever()
+        self.__mqttClient = mqtt.Client()
+        self.__mqttClient.on_connect = self.__handler_on_connect
+        self.__mqttClient.on_message = self.__handler_on_message
+        self.__mqttClient.connect(address[0], self.__config[u'mosca'][u'port'])
+        self.__mqttClient.loop_forever()
         pass
 
     # Search MQTT server

@@ -68,7 +68,7 @@ DiscoverServer.on('listening', function(){
   var retMsg = new Buffer('world');
   setInterval(() => {
 		DiscoverServer.send(retMsg,0,retMsg.length, Config.discover.pong, Config.discover.group, () => {
-      console.log('sent mqtt server address')
+      // console.log('sent mqtt server address')
     });
   }, 5000)
 });
