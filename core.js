@@ -16,7 +16,12 @@ const os = require('os')
 //
 
 var MoscaSettings = {
-  port:Config.mosca.port
+  port:Config.mosca.port,
+  http: {
+    port: Config.mosca.http_port,
+    bundle: true,
+    static: './'
+  }
 }
 
 var MoscaServer = new mosca.Server(MoscaSettings)

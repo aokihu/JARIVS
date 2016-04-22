@@ -1,6 +1,7 @@
 {
   "mosca":{
-    "port":1880
+    "port":1880,
+    "http_port":1884
   },
   "discover":{
     "ping":1000,
